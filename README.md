@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Failed Billing Email — React Email + Resend (Next.js)
 
-## Getting Started
+This project is a simple, complete example of sending a **billing failure email** using:
 
-First, run the development server:
+- **Next.js** (API route for sending)
+- **React Email** (email template)
+- **Resend** (email delivery)
+- A **PDF attachment** (invoice example)
 
-```bash
+The goal is to show how to go from **zero → sending a real email** with a clean, reproducible setup.
+
+---
+
+## 📁 Project structure
+
+Important files in this repo:
+
+- `emails/FailedBillingEmail.tsx`  
+  React Email template used to generate the email HTML.
+
+- `app/api/send-billing/route.ts`  
+  Next.js API route that renders the email and sends it using Resend.
+
+- `public/invoices/abdu-support-invoice.pdf`  
+  Example attachment included in the project.
+
+---
+
+## 🧩 How I built this project
+
+A quick breakdown of the main steps I completed:
+
+### 1. Creating the email template  
+I built the template using **React Email**, and I also used the **new.email** editor during development.  
+The tool is genuinely great — fast preview, Tailwind-like styling, and easy iteration.
+
+I ran into a small session issue where chat messages worked but template edits didn’t update.  
+A simple page refresh solved it, and the editor synced correctly afterward.
+
+### 2. Setting up the Next.js API route  
+I created `app/api/send-billing/route.ts` which:
+
+- Receives JSON from a POST request  
+- Renders the React Email component to HTML  
+- Reads the invoice PDF from the `public/` folder  
+- Encodes it as base64  
+- Sends everything through the Resend SDK
+
+### 3. Preparing `.env.local`
+I added:
+
+RESEND_API_KEY=your_resend_key_here
+
+The API key is only used server-side inside the API route.
+
+### 4. Testing locally  
+I started the dev server and used `curl` to POST to the API route.  
+I verified:
+
+- HTML email was generated correctly  
+- Attachment was included  
+- All props in the template rendered as expected  
+
+---
+
+## 🚀 Zero → Send Tutorial
+
+### 1. Install dependencies
+In the Terminal, run:
+npm install
+
+### 2. Add your Resend key
+
+Create .env.local:
+RESEND_API_KEY=your_resend_key_here
+
+FROM_EMAIL="Billing <billing@yourdomain.com>"
+
+<img width="941" height="146" alt="image" src="https://github.com/user-attachments/assets/173b1a5a-8d9e-4294-bd9b-fd22768ead0e" />
+
+### 3. Start the development server
+Terminal:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You should see that http://localhost:3000 is ready, here is what I got in the terminal
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<img width="559" height="172" alt="image" src="https://github.com/user-attachments/assets/684bbdd8-5592-4f4b-a242-6226fbab0abb" />
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Send the email (example request via cURL)
+This example sends the email with the attachment in public/invoices/. 
+curl -X POST http://localhost:3000/api/send-billing \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "jonni@resend.com",
+    "customerName": "Jonni",
+    "planName": "Pro Abdu Plan",
+    "amount": "$29",
+    "invoicePath": "public/invoices/abdu-support-invoice.pdf",
+    "repoUrl": "https://github.com/AbdullahAlhennawy/failed-billing-email"
+  }'
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Check your inbox
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You should see:
 
-## Deploy on Vercel
+- The full styled billing-failure email  
+- The invoice PDF attachment  
+- A link to the GitHub repo included in the email
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🛠 Troubleshooting notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+These are real issues I hit while working on the project and how I resolved them:
+
+• Attachment not loading
+
+Make sure the file path is readable by the server.
+Placing attachments under public/ simplifies everything.
+
+• Template not updating in new.email
+
+Refreshing the page restored sync.
+Saved local backups to avoid losing changes.
+
+• Email HTML not rendering as expected
+
+Rendering through @react-email/render inside the API route solves this reliably.
