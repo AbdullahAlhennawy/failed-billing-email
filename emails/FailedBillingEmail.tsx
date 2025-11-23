@@ -13,6 +13,10 @@ import {
   Tailwind,
 } from "@react-email/components";
 
+/**
+ * Props for the PaymentFailedEmail component.
+ * This fixes Vercel's TypeScript build errors.
+ */
 export interface Props {
   customerName?: string;
   companyName?: string;
@@ -24,6 +28,9 @@ export interface Props {
   invoiceNumber?: string;
 }
 
+/**
+ * PaymentFailedEmail — typed to satisfy Vercel's TypeScript checks.
+ */
 const PaymentFailedEmail: React.FC<Props> = (props) => {
   const {
     customerName = "Jonni",
@@ -70,7 +77,7 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
 
               <Text className="text-[16px] text-gray-800 mb-[6px] m-0">
                 <br />
-                No worries though - your account is still active for the next 3
+                No worries though — your account is still active for the next 3
                 days, giving you time to update your payment method.
               </Text>
 
@@ -101,12 +108,12 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
 
             {/* P.S. Section */}
             <Section className="border-t border-solid border-gray-200 pt-[28px] mb-[32px]">
-              <Text className="text-[15px] text-gray-600 mb-[0px] m-0 italic leading-relaxed">
-                P.S. {customerName} — didn't expect this from a SaaS cofounder! Why
-                miss a payment? <span className="not-italic">😉</span> I'd have
-                thought you'd happily pay us twice to support a fellow startup —
-                we'll gladly accept the double-payment if you're feeling
-                generous.
+              <Text className="text-[15px] text-gray-600 m-0 italic leading-relaxed">
+                P.S. {customerName} — didn't expect this from a SaaS cofounder!
+                Why miss a payment? <span className="not-italic">😉</span> I'd
+                have thought you'd happily pay us twice to support a fellow
+                startup — we'll gladly accept the double-payment if you're
+                feeling generous.
               </Text>
             </Section>
 
