@@ -1,4 +1,5 @@
-import * as React from 'react';
+// emails/FailedBillingEmail.tsx
+import * as React from "react";
 import {
   Body,
   Button,
@@ -10,10 +11,28 @@ import {
   Section,
   Text,
   Tailwind,
-} from '@react-email/components';
+} from "@react-email/components";
 
-const PaymentFailedEmail = (props) => {
-  const { customerName = "{customerName}", companyName = "Abdu Inc.", planName = "Pro Abdu Plan", amount = "$29", retryUrl = "https://abdullahalhennawy.com/retry-payment/", supportUrl = "https://abdullahalhennawy.com/contact/", attachmentUrl = "/invoices/abdu-support-invoice-styled.pdf" } = props;
+type Props = {
+  customerName?: string;
+  companyName?: string;
+  planName?: string;
+  amount?: string | number;
+  retryUrl?: string;
+  supportUrl?: string;
+  attachmentUrl?: string;
+};
+
+const PaymentFailedEmail: React.FC<Props> = (props) => {
+  const {
+    customerName = "Jonni",
+    companyName = "Abdu Inc.",
+    planName = "Pro Abdu Plan",
+    amount = "$29",
+    retryUrl = "https://abdullahalhennawy.com/retry-payment/",
+    supportUrl = "https://abdullahalhennawy.com/contact/",
+    attachmentUrl = "/Invoices/abdu-support-invoice-styled.pdf",
+  } = props;
 
   return (
     <Html lang="en" dir="ltr">
@@ -37,15 +56,19 @@ const PaymentFailedEmail = (props) => {
               <Text className="text-[16px] text-gray-800 mb-[8px] m-0">
                 Hi {customerName},
               </Text>
-              
+
               <Text className="text-[16px] text-gray-800 mb-[8px] m-0">
                 <br />
-                We tried to process your payment for <strong>{planName}</strong> ({amount}/month), but it didn't go through. This could be due to an expired card, insufficient funds, or your bank blocking the transaction.
+                We tried to process your payment for <strong>{planName}</strong>{" "}
+                ({amount}/month), but it didn't go through. This could be due to
+                an expired card, insufficient funds, or your bank blocking the
+                transaction.
               </Text>
 
               <Text className="text-[16px] text-gray-800 mb-[6px] m-0">
                 <br />
-                No worries though - your account is still active for the next 3 days, giving you time to update your payment method.
+                No worries though - your account is still active for the next 3
+                days, giving you time to update your payment method.
               </Text>
 
               {/* Primary Action Button */}
@@ -76,7 +99,11 @@ const PaymentFailedEmail = (props) => {
             {/* P.S. Section */}
             <Section className="border-t border-solid border-gray-200 pt-[28px] mb-[32px]">
               <Text className="text-[15px] text-gray-600 mb-[0px] m-0 italic leading-relaxed">
-                P.S. {customerName} — didn't expect this from a SaaS cofounder! Why miss a payment? <span className="not-italic">😉</span> I'd have thought you'd happily pay us twice to support a fellow startup — we'll gladly accept the double-payment if you're feeling generous.
+                P.S. {customerName} — didn't expect this from a SaaS cofounder!
+                Why miss a payment? <span className="not-italic">😉</span> I'd
+                have thought you'd happily pay us twice to support a fellow
+                startup — we'll gladly accept the double-payment if you're
+                feeling generous.
               </Text>
             </Section>
 
@@ -90,7 +117,7 @@ const PaymentFailedEmail = (props) => {
               </Text>
               <Section>
                 <Button
-                  href={"/invoices/abdu-support-invoice-styled.pdf"}
+                  href={attachmentUrl}
                   className="bg-gray-700 hover:bg-gray-800 text-white px-[20px] py-[10px] rounded-[4px] text-[13px] font-medium no-underline box-border inline-block"
                 >
                   Download PDF
@@ -121,7 +148,7 @@ PaymentFailedEmail.PreviewProps = {
   amount: "$29",
   retryUrl: "https://yoursaas.com/billing/retry",
   supportUrl: "https://abdullahalhennawy.com/contact/",
-  attachmentUrl: "/invoices/abdu-support-invoice-styled.pdf",
+  attachmentUrl: "/Invoices/abdu-support-invoice-styled.pdf",
 };
 
 export default PaymentFailedEmail;
