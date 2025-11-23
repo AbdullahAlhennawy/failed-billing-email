@@ -1,10 +1,9 @@
 // app/api/send-failed-billing/route.ts
 // Author: Abdullah Alhennawy — Resend / React Email example
 import { Resend } from "resend";
-import FailedBillingEmail from "@/emails/FailedBillingEmail"; // should be a server-safe React function component
+import FailedBillingEmail from "@/emails/FailedBillingEmail"; // MUST be a server component
 import fs from "fs";
 import path from "path";
-import { renderToStaticMarkup } from "react-dom/server";
 
 type RequestBody = {
   to?: string;
@@ -19,7 +18,6 @@ function resolveAttachmentPath(attachPath?: string) {
   if (attachPath && path.isAbsolute(attachPath)) return attachPath;
   if (attachPath) return path.resolve(process.cwd(), attachPath);
 
-  // Try common locations (project attachments or sandbox)
   const candidates = [
     path.resolve(process.cwd(), "attachments/abdu-support-invoice.pdf"),
     path.resolve(process.cwd(), "public/invoices/abdu-support-invoice-styled.pdf"),
@@ -35,7 +33,6 @@ function resolveAttachmentPath(attachPath?: string) {
 
 export async function POST(request: Request) {
   try {
-    // Lazy-read the API key so build doesn't fail at import time.
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     if (!RESEND_API_KEY) {
       return new Response(
@@ -56,7 +53,6 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify({ error: "Missing customerName or amount" }), { status: 400 });
     }
 
-    // Prepare attachment if available
     let attachments:
       | { filename: string; content: string; type?: string }[]
       | undefined = undefined;
@@ -79,7 +75,7 @@ export async function POST(request: Request) {
       attachments = [{ filename, content: base64, type: mime }];
     }
 
-    // Create the React element (call the component) and render to HTML string
+    // Build a server-side React element (NOT client-side)
     const reactElement = FailedBillingEmail({
       customerName,
       amount,
@@ -87,13 +83,12 @@ export async function POST(request: Request) {
       invoiceNumber,
     });
 
-    const html = renderToStaticMarkup(reactElement);
-
+    // Pass the element directly as `react:` (Resend Next.js pattern)
     const resp = await resend.emails.send({
       from: process.env.FROM_EMAIL || "Billing <billing@example.com>",
       to,
       subject: `Payment failed — $${amount}`,
-      html, // send rendered HTML instead of `react:`
+      react: reactElement,
       attachments: attachments ?? undefined,
     });
 
