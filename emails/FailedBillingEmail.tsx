@@ -13,10 +13,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 
-/**
- * Props for the PaymentFailedEmail component.
- * This fixes Vercel's TypeScript build errors.
- */
+
 export interface Props {
   customerName?: string;
   companyName?: string;
@@ -28,9 +25,7 @@ export interface Props {
   invoiceNumber?: string;
 }
 
-/**
- * PaymentFailedEmail — typed to satisfy Vercel's TypeScript checks.
- */
+
 const PaymentFailedEmail: React.FC<Props> = (props) => {
   const {
     customerName = "Jonni",
@@ -39,7 +34,7 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
     amount = "$29",
     retryUrl = "https://abdullahalhennawy.com/retry-payment/",
     supportUrl = "https://abdullahalhennawy.com/contact/",
-    attachmentUrl = "/invoices/abdu-support-invoice-styled.pdf",
+    attachmentUrl = "https://drive.google.com/file/d/1_kDmmSSVA8PDCh70j6YGzoH1r4ofW0gv/view?usp=sharing",
     invoiceNumber,
   } = props;
 
@@ -70,7 +65,7 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
               <Text className="text-[16px] text-gray-800 mb-[8px] m-0">
                 <br />
                 We tried to process your payment for <strong>{planName}</strong>{" "}
-                ({amount}/month), but it didn't go through. This could be due to
+                (${amount}/month), but it didn't go through. This could be due to
                 an expired card, insufficient funds, or your bank blocking the
                 transaction.
               </Text>
@@ -143,6 +138,21 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
               </Section>
             </Section>
 
+
+{/* Repo Link Section */}
+<Section className="border-t border-solid border-gray-200 pt-[24px] mb-[24px]">
+  <Text className="text-[13px] text-gray-600 m-0">
+    <strong>Note:</strong> You can review the full project here:{" "}
+    <a
+      href="https://github.com/AbdullahAlhennawy/failed-billing-email"
+      className="text-blue-600 underline"
+    >
+      Assignment GitHub Repo
+    </a>.
+  </Text>
+</Section>
+
+
             {/* Footer */}
             <Section className="border-t border-solid border-gray-200 pt-[24px] text-center">
               <Text className="text-[12px] text-gray-500 m-0 mb-[8px]">
@@ -166,7 +176,7 @@ PaymentFailedEmail.PreviewProps = {
   amount: "$29",
   retryUrl: "https://yoursaas.com/billing/retry",
   supportUrl: "https://abdullahalhennawy.com/contact/",
-  attachmentUrl: "/invoices/abdu-support-invoice-styled.pdf",
+  attachmentUrl: "https://drive.google.com/file/d/1_kDmmSSVA8PDCh70j6YGzoH1r4ofW0gv/view?usp=sharing",
 };
 
 export default PaymentFailedEmail;
