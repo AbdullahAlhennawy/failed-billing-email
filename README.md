@@ -93,7 +93,7 @@ This example sends the email with the attachment in public/invoices/.
 curl -X POST http://localhost:3000/api/send-billing \
   -H "Content-Type: application/json" \
   -d '{
-    "to": "jonni@resend.com",
+    "to": "ONE-OF-YOUR-EMAIL-ADDRESSES-THAT-YOU-CAN-CHECK-THE-ONBOX-OF",
     "customerName": "Jonni",
     "planName": "Pro Abdu Plan",
     "amount": "$29",
