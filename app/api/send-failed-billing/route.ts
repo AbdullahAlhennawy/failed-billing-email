@@ -1,16 +1,10 @@
-// app/api/send-failed-billing/route.tsx
+// app/api/send-failed-billing/route.ts
 // Author: Abdullah Alhennawy — Resend / React Email example
 import { Resend } from "resend";
-import FailedBillingEmail from "@/emails/FailedBillingEmail";
+import FailedBillingEmail from "@/emails/FailedBillingEmail"; // should be a server-safe React function component
 import fs from "fs";
 import path from "path";
-import React from "react";
-
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-if (!RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY is not set. Add it to .env.local.");
-}
-const resend = new Resend(RESEND_API_KEY);
+import { renderToStaticMarkup } from "react-dom/server";
 
 type RequestBody = {
   to?: string;
@@ -41,7 +35,18 @@ function resolveAttachmentPath(attachPath?: string) {
 
 export async function POST(request: Request) {
   try {
-    const body: RequestBody = await request.json();
+    // Lazy-read the API key so build doesn't fail at import time.
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    if (!RESEND_API_KEY) {
+      return new Response(
+        JSON.stringify({ error: "Missing RESEND_API_KEY on server" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const resend = new Resend(RESEND_API_KEY);
+
+    const body: RequestBody = await request.json().catch(() => ({}));
     const { to, customerName, amount, retryUrl, invoiceNumber, attachPath } = body ?? {};
 
     if (!to || typeof to !== "string") {
@@ -74,27 +79,33 @@ export async function POST(request: Request) {
       attachments = [{ filename, content: base64, type: mime }];
     }
 
+    // Create the React element (call the component) and render to HTML string
+    const reactElement = FailedBillingEmail({
+      customerName,
+      amount,
+      retryUrl,
+      invoiceNumber,
+    });
+
+    const html = renderToStaticMarkup(reactElement);
+
     const resp = await resend.emails.send({
       from: process.env.FROM_EMAIL || "Billing <billing@example.com>",
       to,
       subject: `Payment failed — $${amount}`,
-      react: (
-        <FailedBillingEmail
-          customerName={customerName}
-          amount={amount}
-          retryUrl={retryUrl}
-          invoiceNumber={invoiceNumber}
-        />
-      ),
+      html, // send rendered HTML instead of `react:`
       attachments: attachments ?? undefined,
     });
 
-    return new Response(JSON.stringify({ success: true, data: resp }), { status: 200 });
+    return new Response(JSON.stringify({ success: true, data: resp }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: any) {
     console.error("send-failed-billing error:", err);
     return new Response(
       JSON.stringify({ error: "Internal error sending email", details: err?.message ?? String(err) }),
-      { status: 500 }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }
