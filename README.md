@@ -109,7 +109,7 @@ You should see:
 - The invoice PDF attachment  
 - A link to the GitHub repo included in the email
 
-🛠 Troubleshooting notes
+## 🛠 Troubleshooting notes
 
 These are real issues I hit while working on the project and how I resolved them:
 
