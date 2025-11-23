@@ -89,6 +89,7 @@ You should see that http://localhost:3000 is ready, here is what I got in the te
 
 
 ### 4. Send the email (example request via cURL)
+
 This example sends the email with the invoice attachment located in public/invoices/.
 (The PDF is hosted on Google Drive for the purpose of this assignment.)
 
