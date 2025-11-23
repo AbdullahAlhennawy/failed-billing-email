@@ -13,7 +13,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 
-type Props = {
+export interface Props {
   customerName?: string;
   companyName?: string;
   planName?: string;
@@ -21,7 +21,8 @@ type Props = {
   retryUrl?: string;
   supportUrl?: string;
   attachmentUrl?: string;
-};
+  invoiceNumber?: string;
+}
 
 const PaymentFailedEmail: React.FC<Props> = (props) => {
   const {
@@ -31,7 +32,8 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
     amount = "$29",
     retryUrl = "https://abdullahalhennawy.com/retry-payment/",
     supportUrl = "https://abdullahalhennawy.com/contact/",
-    attachmentUrl = "/Invoices/abdu-support-invoice-styled.pdf",
+    attachmentUrl = "/invoices/abdu-support-invoice-styled.pdf",
+    invoiceNumber,
   } = props;
 
   return (
@@ -39,6 +41,7 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
       <Tailwind>
         <Head />
         <Preview>Payment failed - Let's get you back on track</Preview>
+
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] px-[32px] py-[40px] mx-auto max-w-[600px]">
             {/* Header */}
@@ -99,11 +102,11 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
             {/* P.S. Section */}
             <Section className="border-t border-solid border-gray-200 pt-[28px] mb-[32px]">
               <Text className="text-[15px] text-gray-600 mb-[0px] m-0 italic leading-relaxed">
-                P.S. {customerName} — didn't expect this from a SaaS cofounder!
-                Why miss a payment? <span className="not-italic">😉</span> I'd
-                have thought you'd happily pay us twice to support a fellow
-                startup — we'll gladly accept the double-payment if you're
-                feeling generous.
+                P.S. {customerName} — didn't expect this from a SaaS cofounder! Why
+                miss a payment? <span className="not-italic">😉</span> I'd have
+                thought you'd happily pay us twice to support a fellow startup —
+                we'll gladly accept the double-payment if you're feeling
+                generous.
               </Text>
             </Section>
 
@@ -112,9 +115,17 @@ const PaymentFailedEmail: React.FC<Props> = (props) => {
               <Text className="text-[14px] text-gray-700 m-0 mb-[16px] font-medium">
                 Invoice Receipt
               </Text>
-              <Text className="text-[13px] text-gray-600 m-0 mb-[16px]">
-                <strong>File:</strong> Abdu-support-invoice-15-Nov.pdf
-              </Text>
+
+              {invoiceNumber ? (
+                <Text className="text-[13px] text-gray-600 m-0 mb-[16px]">
+                  <strong>Invoice:</strong> {invoiceNumber}
+                </Text>
+              ) : (
+                <Text className="text-[13px] text-gray-600 m-0 mb-[16px]">
+                  <strong>File:</strong> Abdu-support-invoice-15-Nov.pdf
+                </Text>
+              )}
+
               <Section>
                 <Button
                   href={attachmentUrl}
@@ -148,7 +159,7 @@ PaymentFailedEmail.PreviewProps = {
   amount: "$29",
   retryUrl: "https://yoursaas.com/billing/retry",
   supportUrl: "https://abdullahalhennawy.com/contact/",
-  attachmentUrl: "/Invoices/abdu-support-invoice-styled.pdf",
+  attachmentUrl: "/invoices/abdu-support-invoice-styled.pdf",
 };
 
 export default PaymentFailedEmail;
