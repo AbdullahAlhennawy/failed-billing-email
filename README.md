@@ -97,11 +97,17 @@ curl -X POST http://localhost:3000/api/send-billing \
   -H "Content-Type: application/json" \
   -d '{
     "to": "ONE-OF-YOUR-EMAIL-ADDRESSES-THAT-YOU-CAN-CHECK-THE-INBOX-OF",
+    
     "customerName": "Jonni",
+    
     "planName": "Pro Abdu Plan",
+    
     "amount": "$29",
+    
     "invoicePath": "public/invoices/abdu-support-invoice.pdf",
+    
     "repoUrl": "https://github.com/AbdullahAlhennawy/failed-billing-email"
+    
   }'
 
 
