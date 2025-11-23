@@ -126,3 +126,5 @@ Saved local backups to avoid losing changes.
 • Email HTML not rendering as expected
 
 Rendering through @react-email/render inside the API route solves this reliably.
+
+If you have any questions, feel free to contact me from here https://abdullahalhennawy.com/contact/
