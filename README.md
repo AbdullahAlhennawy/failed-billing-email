@@ -109,7 +109,6 @@ curl -X POST http://localhost:3000/api/send-billing \
     "invoicePath": "public/invoices/abdu-support-invoice.pdf",
     
     "repoUrl": "https://github.com/AbdullahAlhennawy/failed-billing-email"
-    
   }'
 
 
