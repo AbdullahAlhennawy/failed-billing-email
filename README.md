@@ -97,10 +97,14 @@ This example sends the email with the invoice attachment located in public/invoi
 curl -v -X POST http://localhost:3000/api/send-failed-billing \
   -H "Content-Type: application/json" \
   -d '{
-    "to": "abdullah.alhennawy@gmail.com",
+    "to": "abdullah.alhennawy@gmail.com", 
+    
     "customerName": "Jonni",
+    
     "amount": 29,
+    
     "retryUrl": "https://abdullahalhennawy.com/retry-payment/",
+    
     "invoiceNumber": "INV-001"
   }'
 
