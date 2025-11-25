@@ -95,7 +95,9 @@ This example sends the email with the invoice attachment located in public/invoi
 (The PDF is hosted on Google Drive for the purpose of this assignment.):
 
 curl -v -X POST http://localhost:3000/api/send-failed-billing \
+
   -H "Content-Type: application/json" \
+ 
   -d '{
     "to": "abdullah.alhennawy@gmail.com", 
     
