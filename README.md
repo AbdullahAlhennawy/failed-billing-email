@@ -32,7 +32,7 @@ Important files in this repo:
 A quick breakdown of the main steps I completed:
 
 ### 1. Creating the email template  
-I built the template using **React Email**, and I also used the **new.email** editor during development.  
+I built the template using **React Email**, I also used the **new.email** editor during development.  
 The tool is genuinely great — fast preview, Tailwind-like styling, and easy iteration.
 
 I ran into a small session issue where chat messages worked but template edits didn’t update.  
