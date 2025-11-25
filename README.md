@@ -8,6 +8,7 @@ This project is a simple, complete example of sending a **billing failure email*
 - A **PDF attachment** (invoice example)
 
 The goal is to show how to go from **zero → sending a real email** with a clean, reproducible setup.
+Here is Resend's guide on this https://resend.com/docs/send-with-nextjs
 
 ---
 
