@@ -94,22 +94,8 @@ You should see that http://localhost:3000 is ready, here is what I got in the te
 This example sends the email with the invoice attachment located in public/invoices/.
 (The PDF is hosted on Google Drive for the purpose of this assignment.):
 
-curl -v -X POST http://localhost:3000/api/send-failed-billing \
+curl -v -X POST http://localhost:3000/api/send-failed-billing -H "Content-Type: application/json" -d '{"to":"abdullah.alhennawy@gmail.com","customerName":"Jonni","amount":29,"retryUrl":"https://abdullahalhennawy.com/retry-payment/","invoiceNumber":"INV-001"}'
 
-  -H "Content-Type: application/json" \
-  
-  -d '{
- 
-    "to": "abdullah.alhennawy@gmail.com",
-
-    "customerName": "Jonni",
-
-    "amount": 29,
-
-    "retryUrl": "https://abdullahalhennawy.com/retry-payment/",
-
-    "invoiceNumber": "INV-001"
-  }'
 
 
 
